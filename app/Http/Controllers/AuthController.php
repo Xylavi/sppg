@@ -20,7 +20,6 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            dd('Login successful');
             $request->session()->regenerate();
             return redirect('/backend');
         }

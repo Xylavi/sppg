@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::get('/', function () {
@@ -15,4 +15,4 @@ Route::get('/', function () {
 
 Route::get('/backend', function(){
     return 'Login berhasil';
-})->middleware('auth');
+})->middleware(['auth', 'cache.headers:no_store']);
