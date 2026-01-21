@@ -25,7 +25,6 @@ class AuthController extends Controller
             return redirect('/backend');
         }
 
-        \Log::info('Login failed for username: ' . $request->username);
         return back()->withErrors(['username'=>'Login gagal',]);
     }
 
