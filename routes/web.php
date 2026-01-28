@@ -16,3 +16,21 @@ Route::get('/', function () {
 Route::get('/backend', function(){
     return 'Login berhasil';
 })->middleware(['auth', 'cache.headers:no_store']);
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/backend', function() {
+        return 'Dashboard';
+    });
+
+    Route::get('/admin', function() {
+        return 'Admin';
+    })->middleware('role:admin');
+
+    Route::get('/gizi', function() {
+        return 'Gizi';
+    })->middleware('role:petugas_gizi');
+
+    Route::get('/pengaduan', function() {
+        return "Pengaduan";
+    })->middleware('role:petugas_pengaduan');
+});

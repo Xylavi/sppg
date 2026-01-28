@@ -21,10 +21,24 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/backend');
+            $role = Auth::user()->role;
+
+            if ($role === 'admin') {
+                return redirect('/backend/admin');
+            }
+            if ($role === 'petugas_gizi') {
+                return redirect('/backend/gizi');
+            }
+            if ($role === 'petugas_pengaduan') {
+                return redirect('/backend/pengaduan');
+            }
+
+            return redirect('/login');
         }
 
-        return back()->withErrors(['username'=>'Login gagal',]);
+        return back()->withErrors([
+            'username'=>'Login gagal',
+        ]);
     }
 
     public function logout(Request $request){
