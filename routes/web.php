@@ -22,15 +22,15 @@ Route::middleware(['auth'])->group(function() {
         return 'Dashboard';
     });
 
-    Route::get('/admin', function() {
-        return 'Admin';
+    Route::get('/backend/admin', function() {
+        return view('backend.admin');
     })->middleware('role:admin');
 
-    Route::get('/gizi', function() {
+    Route::get('/backend/gizi', function() {
         return 'Gizi';
     })->middleware('role:petugas_gizi');
 
-    Route::get('/pengaduan', function() {
+    Route::get('/backend/pengaduan', function() {
         return "Pengaduan";
     })->middleware('role:petugas_pengaduan');
 });
