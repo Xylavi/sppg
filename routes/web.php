@@ -27,10 +27,10 @@ Route::middleware(['auth'])->group(function() {
     })->middleware('role:admin');
 
     Route::get('/backend/gizi', function() {
-        return 'Gizi';
+        return view('backend.gizi');
     })->middleware('role:petugas_gizi');
 
     Route::get('/backend/pengaduan', function() {
-        return "Pengaduan";
+        return view('backend.pengaduan');
     })->middleware('role:petugas_pengaduan');
 });
