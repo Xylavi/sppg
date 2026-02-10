@@ -14,6 +14,7 @@
                 <th class="border p-2">No</th>
                 <th class="border p-2">Username</th>
                 <th class="border p-2">Role</th>
+                <th class="border p-2">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,13 @@
                 <td class="border p-2">{{ $loop->iteration }}</td>
                 <td class="border p-2">{{ $user->username }}</td>
                 <td class="border p-2">{{ $user->role }}</td>
+                <td class="border p-2">
+                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                        class="text-blue-600 hover:underline">
+                        Edit
+                    </a>
+                </td>
+
             </tr>
             @endforeach
         </tbody>

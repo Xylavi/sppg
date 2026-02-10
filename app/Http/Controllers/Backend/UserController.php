@@ -33,4 +33,32 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index');
     }
+
+    public function edit($id){
+        $user = \App\Models\User::findOrFail($id);
+        return view('backend.admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id){
+        $user = \App\Models\User::findOrFail($id);
+
+        $request->validate([
+            'username' => 'required|unique:users,username,' . $user->id,
+            'role' => 'required',
+        ]);
+
+        $data = [
+            'username' => $request->username,
+            'role' => $request->role,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('admin.users.index');
+    }
+
 }
