@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\GiziController;
 
 /* --- Public --- */
 
@@ -78,3 +79,11 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/users/{id}', [UserController::class, 'destroy'])
             ->name('admin.users.destroy');
     });
+
+Route::middleware(['auth', 'role:petugas_gizi'])
+    ->prefix('backend/gizi')
+    ->group(function () {
+
+        Route::get('/', [GiziController::class, 'index'])
+            ->name('gizi.index');
+});
