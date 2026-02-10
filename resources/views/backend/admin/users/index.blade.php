@@ -4,6 +4,10 @@
 <div class="p-6">
     <h1 class="text-2xl font-bold mb-4">Daftar User</h1>
 
+    <a href="{{ route('admin.users.create') }}" class="inline-block mb-4 bg-green-600 text-white px-4 py-2 rounded">
+        + Tambah User
+    </a>
+
     <table class="w-full border border-gray-300">
         <thead class="bg-gray-100">
             <tr>
