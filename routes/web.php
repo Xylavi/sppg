@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\UserController;
-use App\Http\Controllers\Backend\GiziController;
 
 /* --- Public --- */
 
@@ -76,31 +75,10 @@ Route::middleware(['auth', 'role:admin'])
             ->name('admin.users.destroy');
     });
 
-/* --- Gizi - CRUD Menu --- */
-
 Route::middleware(['auth', 'role:petugas_gizi'])
     ->prefix('backend/gizi')
-    ->name('gizi.')
     ->group(function () {
 
-        Route::get('/', [GiziController::class, 'dashboard'])
-            ->name('dashboard');
-
-        Route::get('/menus', [GiziController::class, 'index'])
-            ->name('menus.index');
-
-        Route::get('/menus/create', [GiziController::class, 'create'])
-            ->name('menus.create');
-
-        Route::post('/menus', [GiziController::class, 'store'])
-            ->name('menus.store');
-
-        Route::get('/menus/{id}/edit', [GiziController::class, 'edit'])
-            ->name('menus.edit');
-
-        Route::put('/menus/{id}', [GiziController::class, 'update'])
-            ->name('menus.update');
-
-        Route::delete('/menus/{id}', [GiziController::class, 'destroy'])
-            ->name('menus.destroy');
-    });
+        Route::get('/', [GiziController::class, 'index'])
+            ->name('gizi.index');
+});
