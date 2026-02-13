@@ -6,7 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\GiziController;
-use App\Http\Controllers\FrontendController;
 
 /* --- Public --- */
 
