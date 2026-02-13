@@ -54,9 +54,4 @@ class FrontendController extends Controller
             'teams' => $teams,
         ]);
     }
-
-    public function pengaduan(): View
-    {
-        return view('frontend.pengaduan');
-    }
 }

@@ -16,7 +16,6 @@
                 <li><a href="{{ route('frontend.index') }}" class="hover:text-cyan-700">Menu Hari Ini</a></li>
                 <li><a href="{{ route('frontend.riwayat-menu') }}" class="hover:text-cyan-700">Riwayat Menu</a></li>
                 <li><a href="{{ route('frontend.tim') }}" class="hover:text-cyan-700">Tim SPPG</a></li>
-                <li><a href="{{ route('frontend.pengaduan') }}" class="hover:text-cyan-700">Pengaduan</a></li>
                 <li><a href="{{ route('login') }}" class="rounded-lg bg-cyan-700 px-3 py-1.5 text-white hover:bg-cyan-800">Login</a>
                 </li>
             </ul>
