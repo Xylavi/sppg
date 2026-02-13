@@ -38,38 +38,24 @@
         @endforelse
     </section>
 
-    <p id="empty-filter-state" class="mt-4 hidden rounded-lg border border-dashed border-slate-300 bg-white p-4 text-sm text-slate-500">
-        Tidak ada data yang sesuai dengan filter.
-    </p>
-
     <script>
         const dateInput = document.getElementById('filter-date');
         const monthInput = document.getElementById('filter-month');
         const schoolInput = document.getElementById('filter-school');
         const items = document.querySelectorAll('.menu-item');
-        const emptyFilterState = document.getElementById('empty-filter-state');
 
         const applyFilter = () => {
             const date = dateInput.value;
             const month = monthInput.value;
             const school = schoolInput.value;
-            let visibleCount = 0;
 
             items.forEach((item) => {
                 const matchDate = !date || item.dataset.date === date;
                 const matchMonth = !month || item.dataset.month === month;
                 const matchSchool = !school || item.dataset.school === school;
-                const isVisible = matchDate && matchMonth && matchSchool;
 
-                item.classList.toggle('hidden', !isVisible);
-
-                if (isVisible) {
-                    visibleCount += 1;
-                }
+                item.classList.toggle('hidden', !(matchDate && matchMonth && matchSchool));
             });
-
-            const hasActiveFilter = Boolean(date || month || school);
-            emptyFilterState.classList.toggle('hidden', !(hasActiveFilter && visibleCount === 0));
         };
 
         [dateInput, monthInput, schoolInput].forEach((el) => {
