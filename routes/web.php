@@ -46,10 +46,6 @@ Route::middleware('auth')->group(function () {
         return view('backend.admin');
     })->middleware('role:admin');
 
-    Route::get('/backend/gizi', function () {
-        return view('backend.gizi');
-    })->middleware('role:petugas_gizi');
-
     Route::get('/backend/pengaduan', function () {
         return view('backend.pengaduan');
     })->middleware('role:petugas_pengaduan');
@@ -80,10 +76,31 @@ Route::middleware(['auth', 'role:admin'])
             ->name('admin.users.destroy');
     });
 
+/* --- Gizi - CRUD Menu --- */
+
 Route::middleware(['auth', 'role:petugas_gizi'])
     ->prefix('backend/gizi')
+    ->name('gizi.')
     ->group(function () {
 
-        Route::get('/', [GiziController::class, 'index'])
-            ->name('gizi.index');
-});
+        Route::get('/', [GiziController::class, 'dashboard'])
+            ->name('dashboard');
+
+        Route::get('/menus', [GiziController::class, 'index'])
+            ->name('menus.index');
+
+        Route::get('/menus/create', [GiziController::class, 'create'])
+            ->name('menus.create');
+
+        Route::post('/menus', [GiziController::class, 'store'])
+            ->name('menus.store');
+
+        Route::get('/menus/{id}/edit', [GiziController::class, 'edit'])
+            ->name('menus.edit');
+
+        Route::put('/menus/{id}', [GiziController::class, 'update'])
+            ->name('menus.update');
+
+        Route::delete('/menus/{id}', [GiziController::class, 'destroy'])
+            ->name('menus.destroy');
+    });
