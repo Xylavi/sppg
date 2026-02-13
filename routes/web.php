@@ -5,12 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\GiziController;
+use App\Http\Controllers\FrontendController;
 
 /* --- Public --- */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+Route::get('/menu/{menu}', [FrontendController::class, 'menuDetail'])->name('frontend.menu-detail');
+Route::get('/riwayat-menu', [FrontendController::class, 'riwayatMenu'])->name('frontend.riwayat-menu');
+Route::get('/tim-sppg', [FrontendController::class, 'tim'])->name('frontend.tim');
+Route::get('/pengaduan', [FrontendController::class, 'pengaduan'])->name('frontend.pengaduan');
 
 /* --- Auth --- */
 
