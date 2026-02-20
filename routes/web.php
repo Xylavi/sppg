@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\GiziController;
+use App\Http\Controllers\Backend\PengaduanController;
+use App\Http\Controllers\FrontendController;
 
 /* --- Public --- */
 
@@ -85,3 +87,18 @@ Route::middleware(['auth', 'role:petugas_gizi'])
         Route::get('/', [GiziController::class, 'index'])
             ->name('gizi.index');
 });
+
+
+Route::middleware(['auth', 'role:petugas_pengaduan'])
+    ->prefix('backend/pengaduan')
+    ->group(function () {
+        Route::get('/', [PengaduanController::class, 'index'])
+            ->name('backend.pengaduan.index');
+
+        Route::get('/{complaint}', [PengaduanController::class, 'show'])
+            ->name('backend.pengaduan.show');
+
+        Route::put('/{complaint}', [PengaduanController::class, 'update'])
+            ->name('backend.pengaduan.update');
+    });
+
