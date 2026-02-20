@@ -29,6 +29,14 @@
                 </li>
                 @endif
 
+                @if(auth()->user()->role === 'petugas_pengaduan')
+                <li>
+                    <a href="/backend/pengaduan" class="text-blue-600 hover:underline">
+                        Kelola Pengaduan
+                    </a>
+                </li>
+                @endif
+
                 <li class="mt-4">
                     <a href="/logout" class="text-red-600 hover:underline">
                         Logout
