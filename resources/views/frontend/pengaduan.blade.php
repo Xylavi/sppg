@@ -3,7 +3,7 @@
 @section('title', 'SPPG | Form Pengaduan')
 
 @section('content')
-    <section class="mb-8 rounded-2xl bg-gradient-to-r from-cyan-700 to-sky-600 p-6 text-white md:p-8">
+    <section class="mb-8 rounded-2xl bg-linear-to-r from-cyan-700 to-sky-600 p-6 text-white md:p-8">
         <p class="mb-2 inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold tracking-wide">Layanan Publik SPPG</p>
         <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Sampaikan Pengaduan Anda</h1>
         <p class="mt-2 max-w-2xl text-cyan-50">Kami menindaklanjuti setiap laporan secara bertahap. Isi formulir berikut secara anonim

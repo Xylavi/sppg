@@ -15,6 +15,14 @@ class Menu extends Model
         'foto_menu'
     ];
 
+    protected $casts = [
+        'tanggal_menu' => 'date',
+    ];
+
+    public function school(){
+        return $this->belongsTo(School::class);
+    }
+
     public function nutrition(){
         return $this->hasOne(Nutrition::class);
     }
