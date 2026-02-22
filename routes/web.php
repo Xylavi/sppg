@@ -14,6 +14,7 @@ Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
 Route::get('/menu/{menu}', [FrontendController::class, 'menuDetail'])->name('frontend.menu-detail');
 Route::get('/riwayat-menu', [FrontendController::class, 'riwayatMenu'])->name('frontend.riwayat-menu');
 Route::get('/tim-sppg', [FrontendController::class, 'tim'])->name('frontend.tim');
+Route::get('/pengaduan', [FrontendController::class, 'pengaduan'])->name('frontend.pengaduan');
 
 /* --- Auth --- */
 
