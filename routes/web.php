@@ -4,12 +4,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\GiziController;
+use App\Http\Controllers\Backend\PengaduanController;
+use App\Http\Controllers\FrontendController;
 
 /* --- Public --- */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+Route::get('/menu/{menu}', [FrontendController::class, 'menuDetail'])->name('frontend.menu-detail');
+Route::get('/riwayat-menu', [FrontendController::class, 'riwayatMenu'])->name('frontend.riwayat-menu');
+Route::get('/tim-sppg', [FrontendController::class, 'tim'])->name('frontend.tim');
 
 /* --- Auth --- */
 
@@ -45,10 +49,6 @@ Route::middleware('auth')->group(function () {
         return view('backend.admin');
     })->middleware('role:admin');
 
-    Route::get('/backend/gizi', function () {
-        return view('backend.gizi');
-    })->middleware('role:petugas_gizi');
-
     Route::get('/backend/pengaduan', function () {
         return view('backend.pengaduan');
     })->middleware('role:petugas_pengaduan');
@@ -78,3 +78,26 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/users/{id}', [UserController::class, 'destroy'])
             ->name('admin.users.destroy');
     });
+
+Route::middleware(['auth', 'role:petugas_gizi'])
+    ->prefix('backend/gizi')
+    ->group(function () {
+
+        Route::get('/', [GiziController::class, 'index'])
+            ->name('gizi.index');
+});
+
+
+Route::middleware(['auth', 'role:petugas_pengaduan'])
+    ->prefix('backend/pengaduan')
+    ->group(function () {
+        Route::get('/', [PengaduanController::class, 'index'])
+            ->name('backend.pengaduan.index');
+
+        Route::get('/{complaint}', [PengaduanController::class, 'show'])
+            ->name('backend.pengaduan.show');
+
+        Route::put('/{complaint}', [PengaduanController::class, 'update'])
+            ->name('backend.pengaduan.update');
+    });
+
