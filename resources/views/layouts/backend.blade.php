@@ -10,7 +10,6 @@
 
     <div class="min-h-screen flex">
 
-        <!-- Sidebar -->
         <aside class="w-64 bg-white shadow p-4">
             <h2 class="font-bold text-lg mb-4">SPPG MBG</h2>
 
@@ -23,8 +22,24 @@
 
                 @if(auth()->user()->role === 'admin')
                 <li>
-                    <a href="/backend/admin/users" class="text-blue-600 hover:underline">
+                    <a href="{{ route('admin.users.index') }}" class="text-blue-600 hover:underline">
                         Manajemen User
+                    </a>
+                </li>
+                @endif
+
+                @if(auth()->user()->role === 'petugas_gizi')
+                <li>
+                    <a href="{{ route('gizi.index') }}" class="text-blue-600 hover:underline">
+                        Kelola Data Gizi
+                    </a>
+                </li>
+                @endif
+
+                @if(auth()->user()->role === 'petugas_pengaduan')
+                <li>
+                    <a href="{{ route('backend.pengaduan.index') }}" class="text-blue-600 hover:underline">
+                        Kelola Pengaduan
                     </a>
                 </li>
                 @endif
@@ -37,7 +52,6 @@
             </ul>
         </aside>
 
-        <!-- Content -->
         <main class="flex-1 p-6">
             @yield('content')
         </main>
@@ -46,4 +60,3 @@
 
 </body>
 </html>
-
