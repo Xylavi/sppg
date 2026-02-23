@@ -15,6 +15,7 @@ Route::get('/menu/{menu}', [FrontendController::class, 'menuDetail'])->name('fro
 Route::get('/riwayat-menu', [FrontendController::class, 'riwayatMenu'])->name('frontend.riwayat-menu');
 Route::get('/tim-sppg', [FrontendController::class, 'tim'])->name('frontend.tim');
 Route::get('/pengaduan', [FrontendController::class, 'pengaduan'])->name('frontend.pengaduan');
+Route::post('/pengaduan', [FrontendController::class, 'storePengaduan'])->name('frontend.pengaduan.store');
 
 /* --- Auth --- */
 
@@ -49,10 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/backend/admin', function () {
         return view('backend.admin');
     })->middleware('role:admin');
-
-    Route::get('/backend/pengaduan', function () {
-        return view('backend.pengaduan');
-    })->middleware('role:petugas_pengaduan');
 });
 
 /* --- Admin - CRUD --- */
@@ -101,4 +98,3 @@ Route::middleware(['auth', 'role:petugas_pengaduan'])
         Route::put('/{complaint}', [PengaduanController::class, 'update'])
             ->name('backend.pengaduan.update');
     });
-

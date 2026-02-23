@@ -21,42 +21,67 @@
         </article>
 
         <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
-            <form id="complaint-form" class="space-y-4" novalidate>
+            @if (session('success'))
+                <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('ticket_number'))
+                <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
+                    <p class="text-sm">Pengaduan berhasil dikirim.</p>
+                    <p class="text-lg font-bold">Nomor Tiket: <span id="ticket-number">{{ session('ticket_number') }}</span></p>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+                    <ul class="list-disc pl-4">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form id="complaint-form" class="space-y-4" method="POST" action="{{ route('frontend.pengaduan.store') }}" enctype="multipart/form-data" novalidate>
+                @csrf
                 <div class="grid gap-4 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">Kategori Pengaduan
-                        <select id="kategori" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2">
+                        <select id="kategori" name="kategori" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2">
                             <option value="">Pilih kategori</option>
-                            <option value="kualitas-makanan">Kualitas Makanan</option>
-                            <option value="kebersihan">Kebersihan</option>
-                            <option value="distribusi">Distribusi</option>
-                            <option value="lainnya">Lainnya</option>
+                            <option value="kualitas-makanan" @selected(old('kategori') === 'kualitas-makanan')>Kualitas Makanan</option>
+                            <option value="kebersihan" @selected(old('kategori') === 'kebersihan')>Kebersihan</option>
+                            <option value="distribusi" @selected(old('kategori') === 'distribusi')>Distribusi</option>
+                            <option value="lainnya" @selected(old('kategori') === 'lainnya')>Lainnya</option>
                         </select>
                     </label>
 
                     <label class="flex items-end gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700">
-                        <input id="is-anonim" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-cyan-700">
+                        <input id="is-anonim" name="is_anonim" type="checkbox" value="1" class="h-4 w-4 rounded border-slate-300 text-cyan-700"
+                            @checked(old('is_anonim'))>
                         Kirim sebagai anonim
                     </label>
                 </div>
 
                 <div id="identity-fields" class="grid gap-4 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">Nama Pelapor
-                        <input id="nama" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
-                            placeholder="Nama lengkap">
+                        <input id="nama" name="nama_pelapor" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
+                            placeholder="Nama lengkap" value="{{ old('nama_pelapor') }}">
                     </label>
                     <label class="text-sm font-medium text-slate-700">Kontak Pelapor
-                        <input id="kontak" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
-                            placeholder="No. HP / Email">
+                        <input id="kontak" name="kontak_pelapor" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
+                            placeholder="No. HP / Email" value="{{ old('kontak_pelapor') }}">
                     </label>
                 </div>
 
                 <label class="block text-sm font-medium text-slate-700">Deskripsi Pengaduan
-                    <textarea id="deskripsi" rows="5" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
-                        placeholder="Jelaskan masalah secara singkat, jelas, dan faktual."></textarea>
+                    <textarea id="deskripsi" name="deskripsi" rows="5" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
+                        placeholder="Jelaskan masalah secara singkat, jelas, dan faktual.">{{ old('deskripsi') }}</textarea>
                 </label>
 
                 <label class="block text-sm font-medium text-slate-700">Lampiran Foto (JPG/PNG, maks 2MB)
-                    <input id="foto" type="file" accept="image/png,image/jpeg"
+                    <input id="foto" name="foto" type="file" accept="image/png,image/jpeg"
                         class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm file:mr-4 file:rounded-md file:border-0 file:bg-cyan-700 file:px-3 file:py-2 file:text-white">
                 </label>
 
@@ -67,10 +92,7 @@
                     Pengaduan</button>
             </form>
 
-            <div id="ticket-result" class="mt-4 hidden rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
-                <p class="text-sm">Pengaduan berhasil disimulasikan.</p>
-                <p class="text-lg font-bold">Nomor Tiket: <span id="ticket-number"></span></p>
-            </div>
+            <div id="ticket-result" class="mt-4 hidden rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800"></div>
         </article>
     </section>
 
@@ -85,19 +107,12 @@
         const fotoInput = document.getElementById('foto');
         const formError = document.getElementById('form-error');
         const ticketResult = document.getElementById('ticket-result');
-        const ticketNumber = document.getElementById('ticket-number');
 
         const toggleIdentityFields = () => {
             const anonim = isAnonimInput.checked;
             identityFields.classList.toggle('hidden', anonim);
             namaInput.toggleAttribute('required', !anonim);
             kontakInput.toggleAttribute('required', !anonim);
-        };
-
-        const generateTicketNumber = () => {
-            const timestamp = Date.now().toString().slice(-6);
-            const random = Math.floor(Math.random() * 900 + 100);
-            return `SPPG-${timestamp}${random}`;
         };
 
         const validateFile = (file) => {
@@ -121,19 +136,20 @@
         toggleIdentityFields();
 
         form.addEventListener('submit', (event) => {
-            event.preventDefault();
             formError.classList.add('hidden');
             ticketResult.classList.add('hidden');
 
             if (!kategoriInput.value || !deskripsiInput.value.trim()) {
                 formError.textContent = 'Kategori dan deskripsi wajib diisi.';
                 formError.classList.remove('hidden');
+                event.preventDefault();
                 return;
             }
 
             if (!isAnonimInput.checked && (!namaInput.value.trim() || !kontakInput.value.trim())) {
                 formError.textContent = 'Nama dan kontak wajib diisi jika tidak anonim.';
                 formError.classList.remove('hidden');
+                event.preventDefault();
                 return;
             }
 
@@ -141,13 +157,9 @@
             if (fileError) {
                 formError.textContent = fileError;
                 formError.classList.remove('hidden');
+                event.preventDefault();
                 return;
             }
-
-            ticketNumber.textContent = generateTicketNumber();
-            ticketResult.classList.remove('hidden');
-            form.reset();
-            toggleIdentityFields();
         });
     </script>
 @endsection
