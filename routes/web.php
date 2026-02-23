@@ -77,9 +77,11 @@ Route::middleware(['auth', 'role:admin'])
             ->name('admin.users.destroy');
     });
 
-Route::middleware(['auth', 'role:petugas_gizi'])
-    ->prefix('backend/gizi')
+Route::middleware(['auth', 'role:petugas_pengaduan'])
+    ->prefix('backend/pengaduan')
     ->group(function () {
+        Route::get('/', [PengaduanController::class, 'index'])
+            ->name('backend.pengaduan.index');
 
         Route::get('/', [GiziController::class, 'index'])
             ->name('gizi.index');
