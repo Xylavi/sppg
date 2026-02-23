@@ -3,14 +3,9 @@
 @section('title', 'SPPG | Menu Hari Ini')
 
 @section('content')
-    <section class="mb-8 rounded-2xl bg-gradient-to-r from-cyan-700 to-sky-600 p-6 text-white md:p-8">
-        <p class="mb-2 inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold tracking-wide">Program MBG SPPG</p>
-        <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Menu Hari Ini</h1>
-        <p class="mt-2 max-w-2xl text-cyan-50">Informasi menu, gizi, dan layanan pengaduan masyarakat dalam satu portal publik yang transparan.</p>
-        <div class="mt-4 flex flex-wrap gap-3">
-            <a href="{{ route('frontend.pengaduan') }}" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-cyan-800 hover:bg-cyan-50">Kirim Pengaduan</a>
-            <a href="{{ route('frontend.aduan-publik') }}" class="rounded-lg border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Lihat Aduan Publik</a>
-        </div>
+    <section class="mb-8">
+        <h1 class="text-3xl font-bold tracking-tight">Menu Hari Ini</h1>
+        <p class="mt-2 text-slate-600">Informasi menu MBG terbaru berdasarkan data dari backend.</p>
     </section>
 
     @if ($menusToday->isEmpty())

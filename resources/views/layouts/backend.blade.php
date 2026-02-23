@@ -28,17 +28,9 @@
                 </li>
                 @endif
 
-                @if(auth()->user()->role === 'petugas_gizi')
-                <li>
-                    <a href="{{ route('gizi.index') }}" class="text-blue-600 hover:underline">
-                        Kelola Data Gizi
-                    </a>
-                </li>
-                @endif
-
                 @if(auth()->user()->role === 'petugas_pengaduan')
                 <li>
-                    <a href="{{ route('backend.pengaduan.index') }}" class="text-blue-600 hover:underline">
+                    <a href="/backend/pengaduan" class="text-blue-600 hover:underline">
                         Kelola Pengaduan
                     </a>
                 </li>

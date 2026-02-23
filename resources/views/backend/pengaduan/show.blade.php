@@ -12,17 +12,6 @@
             </div>
         @endif
 
-
-        @if ($errors->any())
-            <div class="mt-4 rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <dl class="mt-5 grid gap-4 md:grid-cols-2">
             <div>
                 <dt class="text-xs uppercase tracking-wide text-slate-500">Nomor Tiket</dt>
