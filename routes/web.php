@@ -15,10 +15,7 @@ Route::get('/menu/{menu}', [FrontendController::class, 'menuDetail'])->name('fro
 Route::get('/riwayat-menu', [FrontendController::class, 'riwayatMenu'])->name('frontend.riwayat-menu');
 Route::get('/tim-sppg', [FrontendController::class, 'tim'])->name('frontend.tim');
 Route::get('/pengaduan', [FrontendController::class, 'pengaduan'])->name('frontend.pengaduan');
-Route::post('/pengaduan', [FrontendController::class, 'submitPengaduan'])->name('frontend.pengaduan.store');
-Route::get('/aduan-publik', [FrontendController::class, 'aduanPublik'])->name('frontend.aduan-publik');
-Route::get('/kontak-lokasi', [FrontendController::class, 'kontakLokasi'])->name('frontend.kontak-lokasi');
-Route::get('/cek-tiket', [FrontendController::class, 'cekTiket'])->name('frontend.cek-tiket');
+Route::post('/pengaduan', [FrontendController::class, 'storePengaduan'])->name('frontend.pengaduan.store');
 
 /* --- Auth --- */
 
@@ -53,11 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/backend/admin', function () {
         return view('backend.admin');
     })->middleware('role:admin');
-
-    Route::get('/backend/gizi', [GiziController::class, 'index'])
-        ->middleware('role:petugas_gizi')
-        ->name('gizi.index');
-
 });
 
 /* --- Admin - CRUD --- */
@@ -84,6 +76,17 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/users/{id}', [UserController::class, 'destroy'])
             ->name('admin.users.destroy');
     });
+
+Route::middleware(['auth', 'role:petugas_pengaduan'])
+    ->prefix('backend/pengaduan')
+    ->group(function () {
+        Route::get('/', [PengaduanController::class, 'index'])
+            ->name('backend.pengaduan.index');
+
+        Route::get('/', [GiziController::class, 'index'])
+            ->name('gizi.index');
+});
+
 
 Route::middleware(['auth', 'role:petugas_pengaduan'])
     ->prefix('backend/pengaduan')

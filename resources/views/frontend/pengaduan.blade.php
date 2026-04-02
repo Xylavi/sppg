@@ -3,30 +3,12 @@
 @section('title', 'SPPG | Form Pengaduan')
 
 @section('content')
-    <section class="mb-8 rounded-2xl bg-gradient-to-r from-cyan-700 to-sky-600 p-6 text-white md:p-8">
+    <section class="mb-8 rounded-2xl bg-linear-to-r from-cyan-700 to-sky-600 p-6 text-white md:p-8">
         <p class="mb-2 inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold tracking-wide">Layanan Publik SPPG</p>
         <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Sampaikan Pengaduan Anda</h1>
         <p class="mt-2 max-w-2xl text-cyan-50">Kami menindaklanjuti setiap laporan secara bertahap. Isi formulir berikut secara anonim
             atau beridentitas untuk membantu peningkatan kualitas layanan MBG.</p>
     </section>
-
-    @if (session('success_ticket'))
-        <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
-            <p class="text-sm">Pengaduan berhasil dikirim.</p>
-            <p class="text-lg font-bold">Nomor Tiket: {{ session('success_ticket') }}</p>
-            <a href="{{ route('frontend.cek-tiket', ['ticket' => session('success_ticket')]) }}" class="mt-2 inline-flex text-sm font-semibold text-emerald-800 underline">Lacak status tiket ini</a>
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="mb-6 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
     <section class="grid gap-6 lg:grid-cols-3">
         <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-1">
@@ -39,8 +21,30 @@
         </article>
 
         <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
-            <form id="complaint-form" class="space-y-4" method="POST" action="{{ route('frontend.pengaduan.store') }}"
-                enctype="multipart/form-data" novalidate>
+            @if (session('success'))
+                <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('ticket_number'))
+                <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
+                    <p class="text-sm">Pengaduan berhasil dikirim.</p>
+                    <p class="text-lg font-bold">Nomor Tiket: <span id="ticket-number">{{ session('ticket_number') }}</span></p>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+                    <ul class="list-disc pl-4">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form id="complaint-form" class="space-y-4" method="POST" action="{{ route('frontend.pengaduan.store') }}" enctype="multipart/form-data" novalidate>
                 @csrf
                 <div class="grid gap-4 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">Kategori Pengaduan
@@ -54,22 +58,20 @@
                     </label>
 
                     <label class="flex items-end gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700">
-                        <input id="is-anonim" name="is_anonim" type="checkbox" value="1"
-                            class="h-4 w-4 rounded border-slate-300 text-cyan-700" @checked(old('is_anonim'))>
+                        <input id="is-anonim" name="is_anonim" type="checkbox" value="1" class="h-4 w-4 rounded border-slate-300 text-cyan-700"
+                            @checked(old('is_anonim'))>
                         Kirim sebagai anonim
                     </label>
                 </div>
 
                 <div id="identity-fields" class="grid gap-4 md:grid-cols-2">
                     <label class="text-sm font-medium text-slate-700">Nama Pelapor
-                        <input id="nama" name="nama_pelapor" type="text"
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2" placeholder="Nama lengkap"
-                            value="{{ old('nama_pelapor') }}">
+                        <input id="nama" name="nama_pelapor" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
+                            placeholder="Nama lengkap" value="{{ old('nama_pelapor') }}">
                     </label>
                     <label class="text-sm font-medium text-slate-700">Kontak Pelapor
-                        <input id="kontak" name="kontak_pelapor" type="text"
-                            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2" placeholder="No. HP / Email"
-                            value="{{ old('kontak_pelapor') }}">
+                        <input id="kontak" name="kontak_pelapor" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
+                            placeholder="No. HP / Email" value="{{ old('kontak_pelapor') }}">
                     </label>
                 </div>
 
@@ -89,6 +91,8 @@
                     class="inline-flex rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-800">Kirim
                     Pengaduan</button>
             </form>
+
+            <div id="ticket-result" class="mt-4 hidden rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-800"></div>
         </article>
     </section>
 
@@ -102,6 +106,7 @@
         const deskripsiInput = document.getElementById('deskripsi');
         const fotoInput = document.getElementById('foto');
         const formError = document.getElementById('form-error');
+        const ticketResult = document.getElementById('ticket-result');
 
         const toggleIdentityFields = () => {
             const anonim = isAnonimInput.checked;
@@ -132,26 +137,28 @@
 
         form.addEventListener('submit', (event) => {
             formError.classList.add('hidden');
+            ticketResult.classList.add('hidden');
 
             if (!kategoriInput.value || !deskripsiInput.value.trim()) {
-                event.preventDefault();
                 formError.textContent = 'Kategori dan deskripsi wajib diisi.';
                 formError.classList.remove('hidden');
+                event.preventDefault();
                 return;
             }
 
             if (!isAnonimInput.checked && (!namaInput.value.trim() || !kontakInput.value.trim())) {
-                event.preventDefault();
                 formError.textContent = 'Nama dan kontak wajib diisi jika tidak anonim.';
                 formError.classList.remove('hidden');
+                event.preventDefault();
                 return;
             }
 
             const fileError = validateFile(fotoInput.files[0]);
             if (fileError) {
-                event.preventDefault();
                 formError.textContent = fileError;
                 formError.classList.remove('hidden');
+                event.preventDefault();
+                return;
             }
         });
     </script>
