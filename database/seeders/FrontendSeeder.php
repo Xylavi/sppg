@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Complaint;
 use App\Models\Menu;
 use App\Models\Nutrition;
 use App\Models\School;
@@ -42,6 +43,14 @@ class FrontendSeeder extends Seeder
             'tanggal_menu' => today()->subDays(1),
             'school_id' => $schoolB->id,
             'foto_menu' => 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop',
+        ]);
+
+
+        Complaint::create([
+            'ticket_number' => 'SPPG-' . now()->format('Ymd') . '-0001',
+            'kategori' => 'kualitas-makanan',
+            'deskripsi' => 'Porsi sayur pada menu siang dinilai kurang untuk sebagian siswa.',
+            'status' => 'terkirim',
         ]);
 
         Team::insert([

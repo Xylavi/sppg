@@ -10,9 +10,9 @@
 
     <section class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         @forelse ($teams as $team)
-            <article class="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm">
+            <article class="p-4 text-center bg-white border shadow-sm rounded-xl border-slate-200">
                 <img src="{{ $team->foto }}" alt="{{ $team->nama }}"
-                    class="mx-auto mb-4 h-28 w-28 rounded-full object-cover"
+                    class="object-cover mx-auto mb-4 rounded-full h-28 w-28"
                     onerror="this.src='https://placehold.co/300x300?text=Foto+Tim'">
                 <h2 class="text-lg font-semibold">{{ $team->nama }}</h2>
                 <p class="text-sm text-slate-600">{{ $team->jabatan }}</p>

@@ -1,46 +1,57 @@
 @extends('layouts.backend')
 
 @section('content')
-    <a href="{{ route('backend.pengaduan.index') }}" class="mb-4 inline-flex text-sm text-blue-600 hover:underline">← Kembali ke daftar</a>
+    <a href="{{ route('backend.pengaduan.index') }}" class="inline-flex mb-4 text-sm text-blue-600 hover:underline">← Kembali ke daftar</a>
 
-    <div class="rounded-lg bg-white p-6 shadow">
+    <div class="p-6 bg-white rounded-lg shadow">
         <h1 class="text-2xl font-bold">Detail Pengaduan</h1>
 
         @if (session('success'))
-            <div class="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div class="px-4 py-3 mt-4 text-sm border rounded-md border-emerald-200 bg-emerald-50 text-emerald-700">
                 {{ session('success') }}
             </div>
         @endif
 
-        <dl class="mt-5 grid gap-4 md:grid-cols-2">
+
+        @if ($errors->any())
+            <div class="px-4 py-3 mt-4 text-sm border rounded-md border-rose-200 bg-rose-50 text-rose-700">
+                <ul class="pl-5 list-disc">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <dl class="grid gap-4 mt-5 md:grid-cols-2">
             <div>
-                <dt class="text-xs uppercase tracking-wide text-slate-500">Nomor Tiket</dt>
+                <dt class="text-xs tracking-wide uppercase text-slate-500">Nomor Tiket</dt>
                 <dd class="font-semibold text-slate-800">{{ $complaint->ticket_number }}</dd>
             </div>
             <div>
-                <dt class="text-xs uppercase tracking-wide text-slate-500">Kategori</dt>
+                <dt class="text-xs tracking-wide uppercase text-slate-500">Kategori</dt>
                 <dd class="font-semibold text-slate-800">{{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}</dd>
             </div>
             <div>
-                <dt class="text-xs uppercase tracking-wide text-slate-500">Pelapor</dt>
+                <dt class="text-xs tracking-wide uppercase text-slate-500">Pelapor</dt>
                 <dd class="font-semibold text-slate-800">{{ $complaint->nama_pelapor ?? 'Anonim' }}</dd>
             </div>
             <div>
-                <dt class="text-xs uppercase tracking-wide text-slate-500">Kontak</dt>
+                <dt class="text-xs tracking-wide uppercase text-slate-500">Kontak</dt>
                 <dd class="font-semibold text-slate-800">{{ $complaint->kontak_pelapor ?? '-' }}</dd>
             </div>
             <div class="md:col-span-2">
-                <dt class="text-xs uppercase tracking-wide text-slate-500">Deskripsi</dt>
+                <dt class="text-xs tracking-wide uppercase text-slate-500">Deskripsi</dt>
                 <dd class="font-medium text-slate-700">{{ $complaint->deskripsi }}</dd>
             </div>
         </dl>
 
-        <form method="POST" action="{{ route('backend.pengaduan.update', $complaint) }}" class="mt-6 space-y-4 rounded-lg border border-slate-200 p-4">
+        <form method="POST" action="{{ route('backend.pengaduan.update', $complaint) }}" class="p-4 mt-6 space-y-4 border rounded-lg border-slate-200">
             @csrf
             @method('PUT')
 
             <label class="block text-sm font-medium text-slate-700">Status
-                <select name="status" class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm">
+                <select name="status" class="w-full px-3 py-2 mt-1 text-sm border rounded-md border-slate-300">
                     @foreach (['terkirim', 'dibaca', 'diproses', 'selesai'] as $status)
                         <option value="{{ $status }}" @selected(old('status', $complaint->status) === $status)>
                             {{ ucfirst($status) }}
@@ -50,10 +61,10 @@
             </label>
 
             <label class="block text-sm font-medium text-slate-700">Catatan Tindak Lanjut
-                <textarea name="catatan_tindak_lanjut" rows="4" class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm">{{ old('catatan_tindak_lanjut', $complaint->catatan_tindak_lanjut) }}</textarea>
+                <textarea name="catatan_tindak_lanjut" rows="4" class="w-full px-3 py-2 mt-1 text-sm border rounded-md border-slate-300">{{ old('catatan_tindak_lanjut', $complaint->catatan_tindak_lanjut) }}</textarea>
             </label>
 
-            <button type="submit" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Simpan Perubahan</button>
+            <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">Simpan Perubahan</button>
         </form>
     </div>
 @endsection

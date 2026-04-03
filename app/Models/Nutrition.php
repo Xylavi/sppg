@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Nutrition extends Model
 {
-    protected $table = 'nutritions';
+    use HasFactory;
 
     protected $fillable = [
         'menu_id',
         'energi',
         'protein',
         'lemak',
-        'karbohidrat'
+        'karbohidrat',
     ];
 
-    public function menu(){
+    public function menu(): BelongsTo
+    {
         return $this->belongsTo(Menu::class);
     }
 }

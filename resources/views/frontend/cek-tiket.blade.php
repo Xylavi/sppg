@@ -3,24 +3,24 @@
 @section('title', 'SPPG | Cek Status Tiket')
 
 @section('content')
-    <section class="mb-8 rounded-2xl bg-gradient-to-r from-cyan-700 to-sky-600 p-6 text-white md:p-8">
-        <p class="mb-2 inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold tracking-wide">Pelacakan Pengaduan</p>
+    <section class="p-6 mb-8 text-white rounded-2xl bg-gradient-to-r from-cyan-700 to-sky-600 md:p-8">
+        <p class="inline-flex px-3 py-1 mb-2 text-xs font-semibold tracking-wide rounded-full bg-white/20">Pelacakan Pengaduan</p>
         <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Cek Status Tiket</h1>
-        <p class="mt-2 max-w-2xl text-cyan-50">Masukkan nomor tiket untuk melihat progres penanganan pengaduan Anda secara transparan.</p>
+        <p class="max-w-2xl mt-2 text-cyan-50">Masukkan nomor tiket untuk melihat progres penanganan pengaduan Anda secara transparan.</p>
     </section>
 
-    <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <section class="p-5 bg-white border shadow-sm rounded-xl border-slate-200">
         <form method="GET" action="{{ route('frontend.cek-tiket') }}" class="grid gap-3 md:grid-cols-[1fr_auto]">
             <label class="text-sm font-medium text-slate-700">
                 Nomor Tiket
                 <input type="text" name="ticket" value="{{ old('ticket', $ticket) }}" placeholder="Contoh: SPPG-20260402-0001"
-                    class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 uppercase" />
+                    class="w-full px-3 py-2 mt-1 uppercase border rounded-lg border-slate-300" />
             </label>
             <button type="submit" class="self-end rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-800">Cek Status</button>
         </form>
 
         @if ($errors->any())
-            <div class="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+            <div class="p-3 mt-4 text-sm border rounded-lg border-rose-200 bg-rose-50 text-rose-700">
                 @foreach ($errors->all() as $error)
                     <p>{{ $error }}</p>
                 @endforeach
@@ -40,16 +40,16 @@
                 };
             @endphp
 
-            <section class="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <section class="p-5 mt-6 bg-white border shadow-sm rounded-xl border-slate-200">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Nomor Tiket</p>
+                        <p class="text-xs font-semibold tracking-wide uppercase text-slate-500">Nomor Tiket</p>
                         <p class="text-lg font-bold text-slate-900">{{ $complaint->ticket_number }}</p>
                     </div>
                     <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $statusColor }}">{{ ucfirst($complaint->status) }}</span>
                 </div>
 
-                <dl class="mt-4 grid gap-3 text-sm text-slate-700 md:grid-cols-2">
+                <dl class="grid gap-3 mt-4 text-sm text-slate-700 md:grid-cols-2">
                     <div>
                         <dt class="font-semibold text-slate-900">Kategori</dt>
                         <dd>{{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}</dd>
@@ -69,7 +69,7 @@
                 </dl>
             </section>
         @else
-            <section class="mt-6 rounded-xl border border-dashed border-slate-300 bg-white p-5 text-sm text-slate-600">
+            <section class="p-5 mt-6 text-sm bg-white border border-dashed rounded-xl border-slate-300 text-slate-600">
                 Nomor tiket <span class="font-semibold text-slate-900">{{ $ticket }}</span> tidak ditemukan.
             </section>
         @endif
