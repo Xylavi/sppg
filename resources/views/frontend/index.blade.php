@@ -3,7 +3,7 @@
 @section('title', 'SPPG | Menu Hari Ini')
 
 @section('content')
-    <section class="p-6 mb-8 text-white rounded-2xl bg-gradient-to-r from-cyan-700 to-sky-600 md:p-8">
+    <section class="p-6 mb-8 text-white rounded-2xl bg-linear-to-r from-cyan-700 to-sky-600 md:p-8">
         <p class="inline-flex px-3 py-1 mb-2 text-xs font-semibold tracking-wide rounded-full bg-white/20">Program MBG SPPG</p>
         <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Menu Hari Ini</h1>
         <p class="max-w-2xl mt-2 text-cyan-50">Informasi menu, gizi, dan layanan pengaduan masyarakat dalam satu portal publik yang transparan.</p>
