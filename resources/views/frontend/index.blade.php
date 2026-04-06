@@ -130,6 +130,10 @@
     <script>
         const form = document.getElementById('complaint-form');
         const isAnonimInput = document.getElementById('is-anonim');
+
+        // Guard: complaint form elements only exist on /pengaduan page
+        if (!form || !isAnonimInput) return;
+
         const identityFields = document.getElementById('identity-fields');
         const namaInput = document.getElementById('nama');
         const kontakInput = document.getElementById('kontak');
