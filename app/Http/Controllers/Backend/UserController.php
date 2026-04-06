@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index(){
         $users = User::all();
-        return view('backend.admin.index', compact('users'));
+        return view('backend.admin.users.index', compact('users'));
     }
 
     public function create(){
