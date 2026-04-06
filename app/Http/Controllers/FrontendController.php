@@ -19,8 +19,18 @@ class FrontendController extends Controller
             ->latest('tanggal_menu')
             ->get();
 
+        $complaints = Complaint::query()
+            ->latest()
+            ->get(['ticket_number', 'kategori', 'deskripsi', 'status', 'created_at']);
+
+        $teams = Team::query()
+            ->latest()
+            ->get(['nama', 'jabatan', 'foto']);
+
         return view('frontend.index', [
             'menusToday' => $menusToday,
+            'complaints' => $complaints,
+            'teams' => $teams,
         ]);
     }
 
