@@ -26,7 +26,6 @@
                     <li><a href="{{ route('frontend.pengaduan') }}" class="hover:text-cyan-700">Pengaduan</a></li>
                     <li><a href="{{ route('frontend.aduan-publik') }}" class="hover:text-cyan-700">Aduan Publik</a></li>
                     <li><a href="{{ route('frontend.cek-tiket') }}" class="hover:text-cyan-700">Cek Tiket</a></li>
-                    <li><a href="{{ route('frontend.kontak-lokasi') }}" class="hover:text-cyan-700">Kontak & Lokasi</a></li>
                     <li><a href="{{ route('login') }}" class="rounded-lg bg-cyan-700 px-3 py-1.5 text-white hover:bg-cyan-800">Login</a></li>
                 </ul>
             </div>

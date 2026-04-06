@@ -31,7 +31,7 @@
 
                 @if(auth()->user()->role === 'petugas_gizi')
                 <li>
-                    <a href="{{ route('gizi.index') }}" class="text-blue-600 hover:underline">
+                    <a href="{{ route('gizi.dashboard') }}" class="text-blue-600 hover:underline">
                         Kelola Data Gizi
                     </a>
                 </li>

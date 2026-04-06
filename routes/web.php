@@ -32,15 +32,15 @@ Route::get('/backend', function () {
     $user = Auth::user();
 
     if ($user->role === 'admin') {
-        return redirect('/backend/admin');
+        return redirect()->route('admin.users.index');
     }
 
     if ($user->role === 'petugas_gizi') {
-        return redirect('/backend/gizi');
+        return redirect()->route('gizi.dashboard');
     }
 
     if ($user->role === 'petugas_pengaduan') {
-        return redirect('/backend/pengaduan');
+        return redirect()->route('backend.pengaduan.index');
     }
 
     abort(403);
@@ -48,22 +48,26 @@ Route::get('/backend', function () {
 
 /* --- Backend Views --- */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:petugas_gizi'])
+    ->prefix('backend/gizi')
+    ->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('gizi.dashboard');
+        });
 
-    Route::get('/backend/admin', function () {
-        return view('backend.admin');
-    })->middleware('role:admin');
-
-    Route::get('/backend/gizi', [GiziController::class, 'index'])
-        ->middleware('role:petugas_gizi')
-        ->name('gizi.index');
-});
+        Route::get('/dashboard', [GiziController::class, 'dashboard'])
+            ->name('gizi.dashboard');
+    });
 
 /* --- Admin - CRUD --- */
 
 Route::middleware(['auth', 'role:admin'])
     ->prefix('backend/admin')
     ->group(function () {
+
+        Route::get('/', function () {
+            return redirect()->route('admin.users.index');
+        });
 
         Route::get('/users', [UserController::class, 'index'])
             ->name('admin.users.index');
