@@ -8,11 +8,11 @@
 </head>
 <body class="bg-gray-100">
 
-    <div class="min-h-screen flex">
+    <div class="flex min-h-screen">
 
         <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow p-4">
-            <h2 class="font-bold text-lg mb-4">SPPG MBG</h2>
+        <aside class="w-64 p-4 bg-white shadow">
+            <h2 class="mb-4 text-lg font-bold">SPPG MBG</h2>
 
             <ul class="space-y-2">
                 <li>
@@ -23,15 +23,23 @@
 
                 @if(auth()->user()->role === 'admin')
                 <li>
-                    <a href="/backend/admin/users" class="text-blue-600 hover:underline">
+                    <a href="{{ route('admin.users.index') }}" class="text-blue-600 hover:underline">
                         Manajemen User
+                    </a>
+                </li>
+                @endif
+
+                @if(auth()->user()->role === 'petugas_gizi')
+                <li>
+                    <a href="{{ route('gizi.index') }}" class="text-blue-600 hover:underline">
+                        Kelola Data Gizi
                     </a>
                 </li>
                 @endif
 
                 @if(auth()->user()->role === 'petugas_pengaduan')
                 <li>
-                    <a href="/backend/pengaduan" class="text-blue-600 hover:underline">
+                    <a href="{{ route('backend.pengaduan.index') }}" class="text-blue-600 hover:underline">
                         Kelola Pengaduan
                     </a>
                 </li>
@@ -54,4 +62,3 @@
 
 </body>
 </html>
-

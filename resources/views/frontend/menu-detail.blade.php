@@ -3,11 +3,11 @@
 @section('title', 'SPPG | Detail Gizi')
 
 @section('content')
-    <a href="{{ route('frontend.index') }}" class="mb-6 inline-flex text-sm font-medium text-cyan-700 hover:underline">← Kembali ke
+    <a href="{{ route('frontend.index') }}" class="inline-flex mb-6 text-sm font-medium text-cyan-700 hover:underline">← Kembali ke
         Menu Hari Ini</a>
 
-    <article class="grid gap-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-2 md:p-8">
-        <img src="{{ $menu->foto_menu }}" alt="{{ $menu->nama_menu }}" class="h-64 w-full rounded-lg object-cover"
+    <article class="grid gap-6 p-5 bg-white border shadow-sm rounded-xl border-slate-200 md:grid-cols-2 md:p-8">
+        <img src="{{ $menu->foto_menu }}" alt="{{ $menu->nama_menu }}" class="object-cover w-full h-64 rounded-lg"
             onerror="this.src='https://placehold.co/800x450?text=Foto+Menu'">
 
         <div>

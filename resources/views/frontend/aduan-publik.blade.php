@@ -10,10 +10,10 @@
 
     <section class="space-y-4">
         @forelse ($complaints as $complaint)
-            <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <article class="p-5 bg-white border shadow-sm rounded-xl border-slate-200">
                 <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tiket {{ $complaint->ticket_number }}</p>
+                        <p class="text-xs font-semibold tracking-wide uppercase text-slate-500">Tiket {{ $complaint->ticket_number }}</p>
                         <h2 class="text-lg font-semibold text-slate-900">{{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}</h2>
                     </div>
                     @php
@@ -32,7 +32,7 @@
                 <p class="mt-2 text-xs text-slate-500">Dikirim {{ $complaint->created_at->translatedFormat('d F Y H:i') }}</p>
             </article>
         @empty
-            <p class="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-500">Belum ada data aduan publik.</p>
+            <p class="p-6 text-sm bg-white border border-dashed rounded-lg border-slate-300 text-slate-500">Belum ada data aduan publik.</p>
         @endforelse
     </section>
 @endsection
