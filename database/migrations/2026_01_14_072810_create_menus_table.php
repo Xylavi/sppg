@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('tanggal_menu');
             $table->foreignId('school_id')->constrained('schools')->onDelete('cascade');
             $table->string('foto_menu');
+            $table->integer('porsi')->default(0);
             $table->timestamps();
         });
     }
