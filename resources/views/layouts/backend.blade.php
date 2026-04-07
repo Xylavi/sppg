@@ -1,64 +1,91 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <title>Backend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend - SPPG</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
+
+<body class="bg-slate-50 text-slate-900">
 
     <div class="flex min-h-screen">
 
         <!-- Sidebar -->
-        <aside class="w-64 p-4 bg-white shadow">
-            <h2 class="mb-4 text-lg font-bold">SPPG MBG</h2>
+        <aside class="w-64 border-r border-slate-200 bg-white">
+            <div class="p-6 border-b border-slate-200">
+                <h2 class="text-lg font-bold text-cyan-700">Dashboard SPPG</h2>
+            </div>
 
-            <ul class="space-y-2">
-                <li>
-                    <a href="/backend" class="text-blue-600 hover:underline">
-                        Dashboard
-                    </a>
-                </li>
-
+            <nav class="space-y-1 p-4">
                 @if(auth()->user()->role === 'admin')
-                <li>
-                    <a href="{{ route('admin.users.index') }}" class="text-blue-600 hover:underline">
-                        Manajemen User
-                    </a>
-                </li>
+                <a href="{{ route('admin.users.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Manajemen User
+                </a>
+
+                <a href="{{ route('admin.schools.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Data Sekolah MBG
+                </a>
+
+                <a href="{{ route('admin.menus.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Monitor Menu & Gizi
+                </a>
+
+                <a href="{{ route('admin.complaints.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Monitor Pengaduan
+                </a>
                 @endif
 
                 @if(auth()->user()->role === 'petugas_gizi')
-                <li>
-                    <a href="{{ route('gizi.dashboard') }}" class="text-blue-600 hover:underline">
-                        Kelola Data Gizi
-                    </a>
-                </li>
+                <a href="{{ route('gizi.dashboard') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Kelola Data Gizi
+                </a>
+
+                <a href="{{ route('gizi.menus.history') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Riwayat Menu
+                </a>
+
+                <a href="{{ route('gizi.porsi-recap') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Rekap Porsi
+                </a>
                 @endif
 
                 @if(auth()->user()->role === 'petugas_pengaduan')
-                <li>
-                    <a href="{{ route('backend.pengaduan.index') }}" class="text-blue-600 hover:underline">
-                        Kelola Pengaduan
-                    </a>
-                </li>
+                <a href="{{ route('backend.pengaduan.dashboard') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Dashboard Pengaduan
+                </a>
+                <a href="{{ route('backend.pengaduan.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Kelola Pengaduan
+                </a>
                 @endif
 
-                <li class="mt-4">
-                    <a href="/logout" class="text-red-600 hover:underline">
-                        Logout
-                    </a>
-                </li>
-            </ul>
+                <a href="/logout"
+                    class="mt-6 block rounded-lg px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50">
+                    Logout
+                </a>
+            </nav>
         </aside>
 
         <!-- Content -->
-        <main class="flex-1 p-6">
-            @yield('content')
+        <main class="flex-1 overflow-auto">
+            <div class="max-w-7xl px-6 py-8">
+                @yield('content')
+            </div>
         </main>
 
     </div>
 
 </body>
+
 </html>

@@ -71,7 +71,7 @@
         </a>
     </div>
 
-    @if ($menusToday->isEmpty())
+    @if ($menusToday->isEmpty())                
         <div class="flex flex-col items-center justify-center py-20 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 bg-slate-50">
             <svg class="w-12 h-12 mb-4 opacity-40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Z"/></svg>
             <p class="font-semibold">Belum ada menu untuk hari ini.</p>
@@ -82,7 +82,7 @@
             @foreach ($menusToday as $menu)
             <article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-200 bg-white hover:border-cyan-300 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300">
                 <div class="relative overflow-hidden h-48">
-                    <img src="{{ $menu->foto_menu }}"
+                    <img src="{{ asset('storage/' . $menu->foto_menu) }}"
                             alt="{{ $menu->nama_menu }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             onerror="this.src='https://placehold.co/800x450/e2f8f5/0e7490?text=Menu+SPPG'">
@@ -127,7 +127,7 @@
         @forelse ($teams as $team)
         <article class="group flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-cyan-300 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300">
             <div class="relative shrink-0">
-                <img src="{{ $team->foto }}"
+                <img src="{{ asset('storage/' . $team->foto) }}"
                         alt="{{ $team->nama }}"
                         class="w-16 h-16 rounded-xl object-cover border-2 border-slate-100 group-hover:border-cyan-200 transition-colors"
                         onerror="this.src='https://placehold.co/200x200/e2f8f5/0e7490?text={{ urlencode(substr($team->nama,0,1)) }}'">
@@ -273,7 +273,7 @@
 
 <footer class="border-t border-slate-200 pt-10 pb-6 mb-4">
     <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
-        <p>© {{ date('Y') }} SPPG Kokrosono — Portal Publik MBG</p>
+        <p>© {{ date('Y') }} SPPG Kokrosono — Oxy Laviosa</p>
         <div class="flex gap-6">
             <a href="#menu" class="hover:text-cyan-600 transition-colors">Menu</a>
             <a href="#tim" class="hover:text-cyan-600 transition-colors">Tim</a>

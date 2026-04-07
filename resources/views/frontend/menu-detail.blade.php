@@ -7,7 +7,7 @@
         Menu Hari Ini</a>
 
     <article class="grid gap-6 p-5 bg-white border shadow-sm rounded-xl border-slate-200 md:grid-cols-2 md:p-8">
-        <img src="{{ $menu->foto_menu }}" alt="{{ $menu->nama_menu }}" class="object-cover w-full h-64 rounded-lg"
+        <img src="{{ asset('storage/' . $menu->foto_menu) }}" alt="{{ $menu->nama_menu }}" class="object-cover w-full h-64 rounded-lg"
             onerror="this.src='https://placehold.co/800x450?text=Foto+Menu'">
 
         <div>
