@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\SchoolController;
+use App\Http\Controllers\Backend\MenuController;
+use App\Http\Controllers\Backend\AdminComplaintController;
 use App\Http\Controllers\Backend\GiziController;
 use App\Http\Controllers\Backend\PengaduanController;
 use App\Http\Controllers\FrontendController;
@@ -40,7 +43,7 @@ Route::get('/backend', function () {
     }
 
     if ($user->role === 'petugas_pengaduan') {
-        return redirect()->route('backend.pengaduan.index');
+        return redirect()->route('backend.pengaduan.dashboard');
     }
 
     abort(403);
@@ -57,6 +60,30 @@ Route::middleware(['auth', 'role:petugas_gizi'])
 
         Route::get('/dashboard', [GiziController::class, 'dashboard'])
             ->name('gizi.dashboard');
+
+        Route::get('/menus/create', [GiziController::class, 'create'])
+            ->name('gizi.menus.create');
+
+        Route::post('/menus', [GiziController::class, 'store'])
+            ->name('gizi.menus.store');
+
+        Route::get('/menus/{menu}/edit', [GiziController::class, 'edit'])
+            ->name('gizi.menus.edit');
+
+        Route::put('/menus/{menu}', [GiziController::class, 'update'])
+            ->name('gizi.menus.update');
+
+        Route::delete('/menus/{menu}', [GiziController::class, 'destroy'])
+            ->name('gizi.menus.destroy');
+
+        Route::get('/menus/history', [GiziController::class, 'history'])
+            ->name('gizi.menus.history');
+
+        Route::get('/menus/{menu}', [GiziController::class, 'show'])
+            ->name('gizi.menus.show');
+
+        Route::get('/porsi-recap', [GiziController::class, 'porsiRecap'])
+            ->name('gizi.porsi-recap');
     });
 
 /* --- Admin - CRUD --- */
@@ -86,12 +113,55 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::delete('/users/{id}', [UserController::class, 'destroy'])
             ->name('admin.users.destroy');
+
+        Route::get('/schools', [SchoolController::class, 'index'])
+            ->name('admin.schools.index');
+
+        Route::get('/schools/create', [SchoolController::class, 'create'])
+            ->name('admin.schools.create');
+
+        Route::post('/schools', [SchoolController::class, 'store'])
+            ->name('admin.schools.store');
+
+        Route::get('/schools/{school}/edit', [SchoolController::class, 'edit'])
+            ->name('admin.schools.edit');
+
+        Route::put('/schools/{school}', [SchoolController::class, 'update'])
+            ->name('admin.schools.update');
+
+        Route::delete('/schools/{school}', [SchoolController::class, 'destroy'])
+            ->name('admin.schools.destroy');
+
+        Route::get('/menus', [MenuController::class, 'index'])
+            ->name('admin.menus.index');
+
+        Route::get('/menus/history', [MenuController::class, 'history'])
+            ->name('admin.menus.history');
+
+        Route::get('/menus/{menu}', [MenuController::class, 'show'])
+            ->name('admin.menus.show');
+
+        Route::get('/complaints', [AdminComplaintController::class, 'index'])
+            ->name('admin.complaints.index');
+
+        Route::get('/complaints/statistics', [AdminComplaintController::class, 'statistics'])
+            ->name('admin.complaints.statistics');
+
+        Route::get('/complaints/{complaint}', [AdminComplaintController::class, 'show'])
+            ->name('admin.complaints.show');
     });
 
 Route::middleware(['auth', 'role:petugas_pengaduan'])
     ->prefix('backend/pengaduan')
     ->group(function () {
-        Route::get('/', [PengaduanController::class, 'index'])
+        Route::get('/', function () {
+            return redirect()->route('backend.pengaduan.dashboard');
+        });
+
+        Route::get('/dashboard', [PengaduanController::class, 'dashboard'])
+            ->name('backend.pengaduan.dashboard');
+
+        Route::get('/list', [PengaduanController::class, 'index'])
             ->name('backend.pengaduan.index');
 
         Route::get('/{complaint}', [PengaduanController::class, 'show'])

@@ -54,17 +54,17 @@
 
             <!-- Foto Menu -->
             <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Foto Menu (Opsional)</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Foto Menu <span class="text-red-600">*</span></label>
                 <div class="flex items-center justify-center w-full">
-                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100">
-                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <label for="foto_menu" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100">
+                        <div id="foto_display" class="flex flex-col items-center justify-center pt-5 pb-6">
                             <svg class="w-8 h-8 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
                             <p class="text-sm text-slate-600"><span class="font-semibold">Klik untuk upload</span> atau drag and drop</p>
                             <p class="text-xs text-slate-500">PNG, JPG, GIF max 2MB</p>
                         </div>
-                        <input type="file" name="foto_menu" class="hidden" accept="image/*" id="foto_menu">
+                        <input id="foto_menu" type="file" name="foto_menu" class="hidden" accept="image/png,image/jpeg">
                     </label>
                 </div>
                 @error('foto_menu')
@@ -130,24 +130,34 @@
 </div>
 
 <script>
-    // File upload preview
-    const fileInput = document.getElementById('foto_menu');
-    const label = fileInput.parentElement;
+    // File upload preview with proper event listener handling
+    function attachFileChangeListener() {
+        const fileInput = document.getElementById('foto_menu');
+        if (!fileInput) return;
 
-    fileInput.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
-            const fileName = this.files[0].name;
-            label.innerHTML = `
-                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-8 h-8 text-green-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <p class="text-sm text-green-600"><span class="font-semibold">${fileName}</span></p>
-                    <p class="text-xs text-green-500">Klik untuk mengganti file</p>
-                </div>
-                <input type="file" name="foto_menu" class="hidden" accept="image/*" id="foto_menu">
-            `;
-        }
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                const displayArea = document.getElementById('foto_display');
+
+                if (displayArea) {
+                    displayArea.innerHTML = `
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 text-green-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <p class="text-sm text-green-600"><span class="font-semibold">${fileName}</span></p>
+                            <p class="text-xs text-green-500">Klik untuk mengganti file</p>
+                        </div>
+                    `;
+                }
+            }
+        });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        attachFileChangeListener();
     });
 </script>
 @endsection

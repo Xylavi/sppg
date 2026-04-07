@@ -1,57 +1,129 @@
 @extends('layouts.backend')
 
 @section('content')
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <div>
-            <h1 class="text-2xl font-bold">Kelola Pengaduan</h1>
-            <p class="text-sm text-slate-600">Monitor laporan masyarakat dan lanjutkan proses penanganan.</p>
+<div>
+    <!-- Header -->
+    <div class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900">Kelola Pengaduan</h1>
+                <p class="text-sm text-slate-600 mt-1">Daftar lengkap pengaduan yang masuk dari masyarakat</p>
+            </div>
+            <a href="{{ route('backend.pengaduan.dashboard') }}" class="inline-flex items-center rounded-lg border border-cyan-300 px-4 py-2 text-sm font-semibold text-cyan-700 hover:bg-cyan-50 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                Lihat Dashboard
+            </a>
         </div>
     </div>
 
-    <form method="GET" class="flex flex-wrap items-end gap-3 p-4 mb-4 bg-white rounded-lg shadow">
-        <label class="text-sm font-medium text-slate-700">
-            Filter Status
-            <select name="status" class="w-full px-3 py-2 mt-1 text-sm border rounded-md border-slate-300">
-                <option value="">Semua status</option>
-                @foreach (['terkirim', 'dibaca', 'diproses', 'selesai'] as $status)
-                    <option value="{{ $status }}" @selected($selectedStatus === $status)>{{ ucfirst($status) }}</option>
-                @endforeach
-            </select>
-        </label>
+    @if (session('success'))
+    <div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+        {{ session('success') }}
+    </div>
+    @endif
 
-        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">Terapkan</button>
-    </form>
-
-    <div class="overflow-hidden bg-white rounded-lg shadow">
-        <table class="min-w-full text-sm divide-y divide-slate-200">
-            <thead class="bg-slate-50">
-                <tr>
-                    <th class="px-4 py-3 font-semibold text-left text-slate-600">Tiket</th>
-                    <th class="px-4 py-3 font-semibold text-left text-slate-600">Kategori</th>
-                    <th class="px-4 py-3 font-semibold text-left text-slate-600">Status</th>
-                    <th class="px-4 py-3 font-semibold text-left text-slate-600">Tanggal</th>
-                    <th class="px-4 py-3 font-semibold text-left text-slate-600">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-                @forelse($complaints as $complaint)
-                    <tr>
-                        <td class="px-4 py-3 font-medium text-slate-800">{{ $complaint->ticket_number }}</td>
-                        <td class="px-4 py-3">{{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}</td>
-                        <td class="px-4 py-3">{{ ucfirst($complaint->status) }}</td>
-                        <td class="px-4 py-3">{{ $complaint->created_at->format('d/m/Y H:i') }}</td>
-                        <td class="px-4 py-3">
-                            <a href="{{ route('backend.pengaduan.show', $complaint) }}" class="text-blue-600 hover:underline">Detail</a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="px-4 py-5 text-center text-slate-500">Belum ada data pengaduan.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <!-- Filters Section -->
+    <div class="mb-6">
+        <form method="GET" class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <div class="flex flex-wrap items-end gap-4">
+                <div class="flex-1 min-w-48">
+                    <label for="status" class="block text-sm font-semibold text-slate-700 mb-2">Filter Status</label>
+                    <select name="status" id="status" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        <option value="">Semua Status</option>
+                        <option value="terkirim" @selected($selectedStatus === 'terkirim')>Terkirim</option>
+                        <option value="dibaca" @selected($selectedStatus === 'dibaca')>Dibaca</option>
+                        <option value="diproses" @selected($selectedStatus === 'diproses')>Diproses</option>
+                        <option value="selesai" @selected($selectedStatus === 'selesai')>Selesai</option>
+                    </select>
+                </div>
+                <button type="submit" class="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-800 transition-colors">
+                    Terapkan Filter
+                </button>
+            </div>
+        </form>
     </div>
 
-    <div class="mt-4">{{ $complaints->links() }}</div>
+    <!-- Complaints List -->
+    <div class="space-y-3">
+    <!-- Complaints List -->
+    <div class="space-y-3">
+        @forelse($complaints as $complaint)
+            <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1">
+                        <!-- Ticket Header -->
+                        <div class="flex items-center gap-3 mb-3">
+                            <h3 class="text-base font-semibold text-slate-900">{{ $complaint->ticket_number }}</h3>
+                            <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold
+                                @switch($complaint->status)
+                                    @case('terkirim')
+                                        bg-red-100 text-red-700
+                                        @break
+                                    @case('dibaca')
+                                        @break
+                                    @case('diproses')
+                                        @break
+                                    @case('selesai')
+                                        @break
+                                @endswitch
+                            ">
+                                {{ ucfirst($complaint->status) }}
+                            </span>
+                            <span class="inline-flex rounded-full bg-purple-100 px-2.5 py-1 text-xs font-semibold text-purple-700">
+                                {{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}
+                            </span>
+                        </div>
+
+                        <!-- Complaint Description -->
+                        <p class="text-sm text-slate-700 mb-3 line-clamp-2">{{ $complaint->deskripsi }}</p>
+
+                        <!-- Complaint Details -->
+                        <div class="grid gap-3 md:grid-cols-3 text-sm text-slate-600">
+                            <div>
+                                <span class="font-medium text-slate-900">Pelapor:</span> {{ $complaint->nama_pelapor }}
+                            </div>
+                            <div>
+                                <span class="font-medium text-slate-900">Kontak:</span> {{ $complaint->kontak_pelapor }}
+                            </div>
+                            <div>
+                                <span class="font-medium text-slate-900">Tanggal:</span> {{ $complaint->created_at->format('d M Y H:i') }}
+                            </div>
+                        </div>
+
+                        @if($complaint->catatan_tindak_lanjut)
+                            <div class="mt-3 rounded-md bg-slate-50 p-3 border-l-4 border-amber-500">
+                                <p class="text-xs font-semibold text-slate-700 uppercase mb-1">Catatan Tindak Lanjut</p>
+                                <p class="text-sm text-slate-700">{{ $complaint->catatan_tindak_lanjut }}</p>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="shrink-0">
+                        <a href="{{ route('backend.pengaduan.show', $complaint) }}" class="inline-flex items-center rounded-lg border border-cyan-300 px-4 py-2 text-sm font-semibold text-cyan-700 hover:bg-cyan-50 transition-colors">
+                            Lihat Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+                <svg class="mx-auto h-12 w-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                </svg>
+                <h3 class="mt-2 text-lg font-semibold text-slate-900">Belum ada pengaduan</h3>
+                <p class="mt-1 text-sm text-slate-600">{{ $selectedStatus ? 'Tidak ada pengaduan dengan filter status ini' : 'Semua pengaduan akan ditampilkan di sini' }}</p>
+            </div>
+        @endforelse
+    </div>
+
+    <!-- Pagination -->
+    @if ($complaints->hasPages())
+    <div class="mt-6">
+        {{ $complaints->links() }}
+    </div>
+    @endif
+</div>
 @endsection

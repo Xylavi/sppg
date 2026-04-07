@@ -54,7 +54,7 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50">
+<div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
     <div class="bg-white rounded-lg shadow-lg max-w-sm w-full mx-4">
         <div class="p-6">
             <h3 class="text-lg font-semibold text-slate-900 mb-2">Hapus User</h3>

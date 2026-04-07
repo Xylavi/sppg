@@ -8,6 +8,7 @@ use App\Models\School;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GiziController extends Controller
 {
@@ -41,7 +42,7 @@ class GiziController extends Controller
      */
     public function index(): View
     {
-        return view('backend.gizi');
+        return view('backend.gizi.dashboard');
     }
 
     /**
@@ -67,7 +68,7 @@ class GiziController extends Controller
             'nama_menu' => ['required', 'string', 'max:255'],
             'tanggal_menu' => ['required', 'date'],
             'school_id' => ['required', 'exists:schools,id'],
-            'foto_menu' => ['nullable', 'image', 'max:2048'],
+            'foto_menu' => ['required', 'image', 'max:2048'],
             'porsi' => ['required', 'integer', 'min:1'],
             'energi' => ['required', 'numeric', 'min:0'],
             'protein' => ['required', 'numeric', 'min:0'],
@@ -75,15 +76,8 @@ class GiziController extends Controller
             'karbohidrat' => ['required', 'numeric', 'min:0'],
         ]);
 
-        // Handle foto upload
-        if ($request->hasFile('foto_menu')) {
-            $validated['foto_menu'] = $request->file('foto_menu')->store('menus', 'public');
-        }
-
-        // Ensure foto_menu key exists so DB NOT NULL column receives a value
-        if (! array_key_exists('foto_menu', $validated)) {
-            $validated['foto_menu'] = '';
-        }
+        // Handle foto upload (required in create)
+        $validated['foto_menu'] = $request->file('foto_menu')->store('menus', 'public');
 
         // Create menu
         $menu = Menu::create($validated);
@@ -132,10 +126,16 @@ class GiziController extends Controller
             'karbohidrat' => ['required', 'numeric', 'min:0'],
         ]);
 
-        // Handle foto upload
+        // Handle foto upload (optional in update)
         if ($request->hasFile('foto_menu')) {
+            // Delete old foto if it exists
+            if ($menu->foto_menu && Storage::disk('public')->exists($menu->foto_menu)) {
+                Storage::disk('public')->delete($menu->foto_menu);
+            }
+            // Upload new foto
             $validated['foto_menu'] = $request->file('foto_menu')->store('menus', 'public');
         } else {
+            // Keep existing foto
             unset($validated['foto_menu']);
         }
 
@@ -156,6 +156,27 @@ class GiziController extends Controller
         return redirect()
             ->route('gizi.dashboard')
             ->with('success', 'Menu berhasil diperbarui.');
+    }
+
+    /**
+     * Delete a menu.
+     */
+    public function destroy(Menu $menu): RedirectResponse
+    {
+        // Delete foto if it exists
+        if ($menu->foto_menu && Storage::disk('public')->exists($menu->foto_menu)) {
+            Storage::disk('public')->delete($menu->foto_menu);
+        }
+
+        // Delete nutrition data
+        $menu->nutrition()->delete();
+
+        // Delete menu
+        $menu->delete();
+
+        return redirect()
+            ->route('gizi.dashboard')
+            ->with('success', 'Menu berhasil dihapus.');
     }
 
     /**

@@ -16,19 +16,29 @@
         <!-- Sidebar -->
         <aside class="w-64 border-r border-slate-200 bg-white">
             <div class="p-6 border-b border-slate-200">
-                <h2 class="text-lg font-bold text-cyan-700">SPPG MBG</h2>
+                <h2 class="text-lg font-bold text-cyan-700">Dashboard SPPG</h2>
             </div>
 
             <nav class="space-y-1 p-4">
-                <a href="/backend"
-                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
-                    Dashboard
-                </a>
-
                 @if(auth()->user()->role === 'admin')
                 <a href="{{ route('admin.users.index') }}"
                     class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
                     Manajemen User
+                </a>
+
+                <a href="{{ route('admin.schools.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Data Sekolah MBG
+                </a>
+
+                <a href="{{ route('admin.menus.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Monitor Menu & Gizi
+                </a>
+
+                <a href="{{ route('admin.complaints.index') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Monitor Pengaduan
                 </a>
                 @endif
 
@@ -36,6 +46,16 @@
                 <a href="{{ route('gizi.dashboard') }}"
                     class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
                     Kelola Data Gizi
+                </a>
+
+                <a href="{{ route('gizi.menus.history') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Riwayat Menu
+                </a>
+
+                <a href="{{ route('gizi.porsi-recap') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Rekap Porsi
                 </a>
                 @endif
 

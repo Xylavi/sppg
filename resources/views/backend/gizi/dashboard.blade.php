@@ -135,6 +135,9 @@
                         <a href="{{ route('gizi.menus.show', $menu) }}" class="rounded-lg border border-cyan-300 px-3 py-2 text-sm font-semibold text-cyan-700 hover:bg-cyan-50">
                             Lihat
                         </a>
+                        <button type="button" class="rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50" onclick="openDeleteModal('{{ $menu->id }}', '{{ $menu->nama_menu }}')">
+                            Hapus
+                        </button>
                     </div>
                 </div>
             </div>
@@ -160,4 +163,40 @@
         @endif
     </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div class="bg-white rounded-lg shadow-lg max-w-sm w-full mx-4">
+        <div class="p-6">
+            <h3 class="text-lg font-semibold text-slate-900 mb-2">Hapus Menu</h3>
+            <p class="text-slate-600 mb-6">Anda yakin ingin menghapus menu <span id="deleteMenuName" class="font-semibold text-slate-900"></span>? Tindakan ini tidak dapat dibatalkan.</p>
+
+            <div class="flex gap-3">
+                <button type="button" onclick="closeDeleteModal()" class="flex-1 rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                    Batal
+                </button>
+                <form id="deleteForm" method="POST" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700">
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDeleteModal(menuId, menuName) {
+        document.getElementById('deleteMenuName').textContent = menuName;
+        document.getElementById('deleteForm').action = `/backend/gizi/menus/${menuId}`;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+</script>
+
 @endsection

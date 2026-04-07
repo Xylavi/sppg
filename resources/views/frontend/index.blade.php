@@ -273,7 +273,7 @@
 
 <footer class="border-t border-slate-200 pt-10 pb-6 mb-4">
     <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
-        <p>© {{ date('Y') }} SPPG Kokrosono — Portal Publik MBG</p>
+        <p>© {{ date('Y') }} SPPG Kokrosono — Oxy Laviosa</p>
         <div class="flex gap-6">
             <a href="#menu" class="hover:text-cyan-600 transition-colors">Menu</a>
             <a href="#tim" class="hover:text-cyan-600 transition-colors">Tim</a>
