@@ -176,7 +176,7 @@
                                     @if($isCompleted || $complaint->status === 'terkirim')
                                         ✓
                                     @else
-                                        {{ loop()->index + 1 }}
+                                        {{ $loop->index + 1 }}
                                     @endif
                                 </div>
                                 <span class="text-xs font-medium

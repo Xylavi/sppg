@@ -60,6 +60,10 @@
                 @endif
 
                 @if(auth()->user()->role === 'petugas_pengaduan')
+                <a href="{{ route('backend.pengaduan.dashboard') }}"
+                    class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                    Dashboard Pengaduan
+                </a>
                 <a href="{{ route('backend.pengaduan.index') }}"
                     class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
                     Kelola Pengaduan

@@ -195,48 +195,64 @@
     </div>
 
     <!-- Recent Complaints Section -->
-    <div>
-        <h2 class="mb-4 text-xl font-semibold text-slate-900">Pengaduan Terbaru</h2>
+    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="mb-5 text-lg font-semibold text-slate-900">Pengaduan Terbaru</h2>
 
         <div class="space-y-3">
             @forelse($recentComplaints as $complaint)
-                <a href="{{ route('backend.pengaduan.show', $complaint) }}" class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md hover:border-cyan-300 transition-all">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h3 class="text-base font-semibold text-slate-900">{{ $complaint->ticket_number }}</h3>
-                                <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold
-                                    @switch($complaint->status)
-                                        @case('terkirim')
-                                            bg-red-100 text-red-700
-                                            @break
-                                        @case('dibaca')
-                                            bg-yellow-100 text-yellow-700
-                                            @break
-                                        @case('diproses')
-                                            bg-blue-100 text-blue-700
-                                            @break
-                                        @case('selesai')
-                                            bg-green-100 text-green-700
-                                            @break
-                                    @endswitch
-                                ">
-                                    {{ ucfirst($complaint->status) }}
-                                </span>
-                                <span class="inline-flex rounded-full bg-purple-100 px-2.5 py-1 text-xs font-semibold text-purple-700">
-                                    {{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}
-                                </span>
-                            </div>
-                            <p class="text-sm text-slate-700 line-clamp-1">{{ $complaint->deskripsi }}</p>
-                            <p class="text-xs text-slate-600 mt-2">{{ $complaint->created_at->diffForHumans() }} • {{ $complaint->nama_pelapor ?? 'Anonim' }}</p>
+                <a href="{{ route('backend.pengaduan.show', $complaint) }}" class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 p-4 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-md hover:border-cyan-300 transition-all group">
+                    <div class="flex-1 min-w-0">
+                        <!-- Status Badges Row -->
+                        <div class="flex flex-wrap items-center gap-2 mb-2">
+                            <h3 class="text-sm font-semibold text-slate-900 truncate">{{ $complaint->ticket_number }}</h3>
+
+                            <!-- Status Badge -->
+                            @switch($complaint->status)
+                                @case('terkirim')
+                                    <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold bg-red-100 text-red-700 whitespace-nowrap">
+                                        {{ ucfirst($complaint->status) }}
+                                    </span>
+                                    @break
+                                @case('dibaca')
+                                    <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-700 whitespace-nowrap">
+                                        {{ ucfirst($complaint->status) }}
+                                    </span>
+                                    @break
+                                @case('diproses')
+                                    <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold bg-blue-100 text-blue-700 whitespace-nowrap">
+                                        {{ ucfirst($complaint->status) }}
+                                    </span>
+                                    @break
+                                @case('selesai')
+                                    <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-700 whitespace-nowrap">
+                                        {{ ucfirst($complaint->status) }}
+                                    </span>
+                                    @break
+                            @endswitch
+
+                            <!-- Category Badge -->
+                            <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold bg-purple-100 text-purple-700 whitespace-nowrap">
+                                {{ ucfirst(str_replace('-', ' ', $complaint->kategori)) }}
+                            </span>
                         </div>
-                        <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
+
+                        <!-- Description -->
+                        <p class="text-sm text-slate-700 mb-2 line-clamp-2">{{ $complaint->deskripsi }}</p>
+
+                        <!-- Metadata -->
+                        <p class="text-xs text-slate-500">{{ $complaint->created_at->translatedFormat('d F Y, H:i') }} • {{ $complaint->nama_pelapor ?? 'Anonim' }}</p>
                     </div>
+
+                    <!-- Arrow Icon -->
+                    <svg class="w-5 h-5 text-slate-400 shrink-0 sm:mt-0.5 group-hover:text-cyan-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
             @empty
-                <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+                <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50/50 p-8 text-center">
+                    <svg class="w-10 h-10 mx-auto mb-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>
+                    </svg>
                     <p class="text-sm text-slate-600">Belum ada pengaduan</p>
                 </div>
             @endforelse
