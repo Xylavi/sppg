@@ -5,6 +5,21 @@ Proyek ini dikembangkan untuk sekolah binaan agar orang tua, siswa, dan petugas 
 
 ---
 
+## Daftar Isi
+
+* [Fitur Utama](#fitur-utama)
+  * [Frontend (Publik)](#frontend-publik)
+  * [Backend (Dashboard)](#backend-dashboard)
+* [Teknologi & Arsitektur](#teknologi--arsitektur)
+* [Instalasi](#instalasi)
+  * [Prerequisite](#prerequisite)
+  * [Langkah Instalasi](#langkah-instalasi)
+* [Menjalankan Aplikasi](#menjalankan-aplikasi)
+  * [Mode Development](#mode-development)
+* [Lisensi](#lisensi)
+
+---
+
 ## Fitur Utama
 
 ### Frontend (Publik)
