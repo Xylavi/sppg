@@ -71,7 +71,7 @@
         </a>
     </div>
 
-    @if ($menusToday->isEmpty())                
+    @if ($menusToday->isEmpty())
         <div class="flex flex-col items-center justify-center py-20 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 bg-slate-50">
             <svg class="w-12 h-12 mb-4 opacity-40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Z"/></svg>
             <p class="font-semibold">Belum ada menu untuk hari ini.</p>
@@ -125,9 +125,14 @@
 
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         @forelse ($teams as $team)
+        @php
+            $teamPhoto = $team->foto && \Illuminate\Support\Str::startsWith($team->foto, ['http://', 'https://'])
+                ? $team->foto
+                : asset('storage/' . ltrim((string) $team->foto, '/'));
+        @endphp
         <article class="group flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-cyan-300 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300">
             <div class="relative shrink-0">
-                <img src="{{ asset('storage/' . $team->foto) }}"
+                <img src="{{ $teamPhoto }}"
                         alt="{{ $team->nama }}"
                         class="w-16 h-16 rounded-xl object-cover border-2 border-slate-100 group-hover:border-cyan-200 transition-colors"
                         onerror="this.src='https://placehold.co/200x200/e2f8f5/0e7490?text={{ urlencode(substr($team->nama,0,1)) }}'">
